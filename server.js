@@ -14,7 +14,7 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const DB_PATH = path.join(__dirname, 'transactions.json');
 const USERS_DB_PATH = path.join(__dirname, 'users.json');
 
