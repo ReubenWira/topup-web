@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         trackButton.textContent = 'Mencari...';
 
         try {
-            const response = await fetch(`http://localhost:3000/api/status?ref_id=${refId}`);
+            const response = await fetch(`/api/status?ref_id=${refId}`);
 
             // --- INI BAGIAN UTAMA PERBAIKAN ---
             // Cek jika respons GAGAL (misal: 404 Not Found)
