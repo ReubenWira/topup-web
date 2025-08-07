@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lacak Pesanan - JawirTopup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="product-page.css">
+    <style>
+        .track-container {
+            max-width: 700px;
+            margin: 120px auto 50px;
+            padding: 40px;
+            text-align: center;
+        }
+        .track-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+        .track-form input {
+            flex-grow: 1;
+            padding: 15px;
+            background: #080918;
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+        .track-result-container {
+            display: none; /* Disembunyikan awalnya */
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: left;
+        }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--glass-border);
+            align-items: center;
+        }
+        .result-row:last-child {
+            border-bottom: none;
+        }
+        .result-row span:first-child {
+            color: var(--text-muted);
+        }
+        .result-row span:last-child {
+            font-weight: 600;
+            text-align: right;
+        }
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: white;
+            text-transform: capitalize;
+        }
+        .status-badge.sukses { background-color: #28a745; }
+        .status-badge.pending { background-color: #ffc107; color: #333 }
+        .status-badge.gagal { background-color: #dc3545; }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">Jawir<span>Topup</span></a>
+            <nav class="nav-links">
+                <a href="index.html#home">Home</a>
+                <a href="index.html#popular">Produk</a>
+                <a href="index.html#how-it-works">Cara Kerja</a>
+                <a href="lacak.html">Lacak Pesanan</a>
+            </nav>
+            <div id="auth-links">
+                <a href="login.html" class="btn-primary">Masuk / Daftar</a>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="track-container">
+            <h1 class="section-title" style="margin-bottom: 20px;">Lacak Pesanan Anda</h1>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">Masukkan ID Transaksi (Ref ID) Anda untuk melihat status pesanan.</p>
+
+            <div class="track-form">
+                <input type="text" id="refIdInput" placeholder="Contoh: JAWIRTOPUP-17..."/>
+                <button class="btn-buy" id="trackButton" style="width: auto; padding: 0 30px;">Lacak</button>
+            </div>
+
+            <div id="loadingSpinner" style="display: none;">
+                <div class="spinner" style="margin: 40px auto;"></div>
+            </div>
+
+            <div class="track-result-container" id="trackResult">
+            </div>
+            <p id="errorMessage" style="color: #ff4d4d; display: none;"></p>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="logo">Jawir<span>Topup</span></a>
+                    <p>Platform top up game dan produk digital terdepan dengan layanan super cepat dan aman.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Navigasi</h4>
+                    <ul>
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="index.html#popular">Produk Populer</a></li>
+                        <li><a href="#">Syarat & Ketentuan</a></li>
+                        <li><a href="#">Kebijakan Privasi</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Ikuti Kami</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 JawirTopup. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="lacak.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

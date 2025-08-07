@@ -1,0 +1,86 @@
+/* Styling untuk Halaman Login & Registrasi */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 80px; /* Offset navbar */
+}
+
+.auth-form {
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.auth-form h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.auth-form p {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+}
+
+.auth-form .form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.auth-form .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.auth-form .form-group input {
+    width: 100%;
+    padding: 12px;
+    background: #080918;
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: var(--text-light);
+    font-size: 1rem;
+}
+
+.auth-form .btn-buy {
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.form-switch {
+    margin-top: 25px !important;
+    font-size: 0.9rem;
+}
+
+.form-switch a, .form-switch-link {
+    color: var(--primary-accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+.form-switch-link{
+    font-size: 0.9rem;
+}
+
+.message,
+.error-message {
+    background-color: rgba(255, 0, 0, 0.1);
+    border: 1px solid red;
+    color: var(--text-light);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.success-message {
+    background-color: rgba(0, 255, 127, 0.1) !important;
+    border: 1px solid springgreen !important;
+}

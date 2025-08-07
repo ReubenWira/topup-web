@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konfirmasi Pembayaran - JawirTopup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="product-page.css">
+    <style>
+        .confirmation-container { max-width: 600px; margin: 120px auto 50px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 15px; padding: 40px; text-align: center; }
+        .confirmation-container h1 { font-size: 2rem; color: var(--primary-accent); margin-bottom: 15px; }
+        .confirmation-container p { color: var(--text-muted); margin-bottom: 30px; }
+        .payment-details img { max-width: 280px; border-radius: 10px; margin: 0 auto; display: block; border: 5px solid white; }
+        .status-box { padding: 20px; border-radius: 8px; margin-top: 20px; }
+        .status-pending { background-color: rgba(255, 165, 0, 0.1); border: 1px solid orange; }
+        .status-success { background-color: rgba(0, 255, 127, 0.1); border: 1px solid springgreen; }
+        .status-failed { background-color: rgba(255, 0, 0, 0.1); border: 1px solid red; }
+        .spinner { border: 4px solid rgba(255, 255, 255, 0.2); border-left-color: var(--primary-accent); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <header class="navbar"><div class="container"><a href="index.html" class="logo">Jawir<span>Topup</span></a></div></header>
+    <main>
+        <div id="confirmation-content">
+            </div>
+    </main>
+    <script src="konfirmasi.js"></script>
+</body>
+</html>

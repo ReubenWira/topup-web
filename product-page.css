@@ -1,0 +1,250 @@
+/* --- PRODUCT PAGE STYLING --- */
+.product-page {
+    padding-top: 80px; /* Height of navbar */
+    background-color: var(--dark-bg);
+}
+
+.product-banner {
+    width: 100%;
+    height: 350px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* --- Banner Spesifik untuk Setiap Game --- */
+#ml-banner {
+    background-image: linear-gradient(rgba(11, 12, 29, 0.6), var(--dark-bg)), url('https://images.hdqwalls.com/wallpapers/2021-gusion-mobile-legends-4k-bi.jpg');
+}
+
+#ff-banner {
+    background-image: linear-gradient(rgba(11, 12, 29, 0.6), var(--dark-bg)), url('https://images4.alphacoders.com/133/1339343.jpeg');
+}
+
+#genshin-banner {
+    background-image: linear-gradient(rgba(11, 12, 29, 0.6), var(--dark-bg)), url('https://images.alphacoders.com/133/1333132.png');
+}
+
+#valorant-banner {
+    background-image: linear-gradient(rgba(11, 12, 29, 0.6), var(--dark-bg)), url('https://images.alphacoders.com/132/1323319.jpeg');
+}
+
+.product-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    margin-top: -120px; /* Tarik layout lebih ke atas */
+    position: relative;
+    z-index: 10;
+    padding-bottom: 100px;
+}
+
+.game-info {
+    grid-column: 1 / -1; /* Membuat elemen ini memanjang selebar grid */
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+}
+
+.game-info img {
+    width: 100px;
+    height: 100px;
+    border-radius: 15px;
+    object-fit: cover;
+}
+
+.game-info .game-title h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.game-info .game-title p {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin: 5px 0 0 0;
+}
+
+.product-card-step {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    position: relative;
+    backdrop-filter: blur(5px);
+}
+
+.step-number {
+    position: absolute;
+    top: 20px;
+    left: -15px;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(90deg, var(--primary-accent), var(--secondary-accent));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    box-shadow: 0 0 15px var(--primary-accent);
+}
+
+.product-card-step h2 {
+    margin-bottom: 20px;
+    padding-left: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text-muted);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    background: #080918;
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: var(--text-light);
+    font-size: 1rem;
+}
+
+.form-hint {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.nominal-grid, .payment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.nominal-item, .payment-item {
+    background: #080918;
+    border: 2px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 20px 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.nominal-item i {
+    color: var(--secondary-accent);
+    margin-right: 8px;
+}
+
+.nominal-item:hover, .nominal-item.active {
+    border-color: var(--primary-accent);
+    background-color: rgba(138, 77, 255, 0.1);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(138, 77, 255, 0.1);
+}
+
+.payment-item img {
+    max-height: 30px;
+    width: 100%;
+    object-fit: contain;
+    filter: grayscale(100%) brightness(0.8);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.payment-item:hover, .payment-item.active {
+    border-color: var(--primary-accent);
+    background-color: rgba(138, 77, 255, 0.1);
+}
+
+.payment-item:hover img, .payment-item.active img {
+    filter: grayscale(0%) brightness(1);
+    opacity: 1;
+}
+
+.checkout-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-muted);
+}
+
+.summary-row.total {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--glass-border);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text-light);
+}
+
+.summary-row.total span:last-child {
+    font-size: 1.5rem;
+    color: var(--secondary-accent);
+}
+
+.btn-buy {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--primary-accent), var(--secondary-accent));
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-buy:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px var(--primary-accent);
+}
+
+@media (max-width: 992px) {
+    .product-layout {
+        grid-template-columns: 1fr;
+    }
+    .product-checkout {
+        margin-top: 0;
+    }
+}
+
+/* --- STYLING UNTUK PRODUK NONAKTIF --- */
+.nominal-item.disabled {
+    background-color: #1a1c2f;
+    border-color: rgba(138, 77, 255, 0.1);
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    transform: none;
+    box-shadow: none;
+}
+
+.nominal-item.disabled:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: rgba(138, 77, 255, 0.1);
+}

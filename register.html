@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar - JawirTopup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">Jawir<span>Topup</span></a>
+        </div>
+    </header>
+
+    <main>
+        <div class="auth-container">
+            <form id="registerForm" class="auth-form">
+                <h1>Buat Akun Baru</h1>
+                <p>Bergabunglah dengan JawirTopup.</p>
+                <div id="errorMessage" class="error-message" style="display:none;"></div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn-buy">Daftar</button>
+                <p class="form-switch">Sudah punya akun? <a href="login.html">Masuk di sini</a></p>
+            </form>
+        </div>
+    </main>
+    <script src="register.js"></script>
+</body>
+</html>
