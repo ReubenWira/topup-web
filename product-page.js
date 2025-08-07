@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
             buyButton.textContent = 'Mengarahkan...';
 
             try {
-                const response = await fetch('http://localhost:3000/api/buat-transaksi', {
+                const response = await fetch('/api/buat-transaksi', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
