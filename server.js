@@ -15,8 +15,9 @@ const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 
 const PORT = process.env.PORT || 3000;
-const DB_PATH = path.join(__dirname, 'transactions.json');
-const USERS_DB_PATH = path.join(__dirname, 'users.json');
+const MOUNT_PATH = process.env.RENDER_DISK_MOUNT_PATH || __dirname;
+const DB_PATH = path.join(MOUNT_PATH, 'transactions.json');
+const USERS_DB_PATH = path.join(MOUNT_PATH, 'users.json');
 
 
 const loadTransactions = () => {
