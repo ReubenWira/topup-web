@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         const user = localStorage.getItem('loggedInUser');
-        const url = `http://localhost:3000/api/products?brand=${encodeURIComponent(brand)}&username=${encodeURIComponent(user || '')}`;
+        const url = `/api/products?brand=${encodeURIComponent(brand)}&username=${encodeURIComponent(user || '')}`;
 
         try {
             const response = await fetch(url);
