@@ -14,7 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Koneksi ke WebSocket Server
-    const ws = new WebSocket(`ws://localhost:3000?ref_id=${ref_id}`);
+    const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const ws = new WebSocket(`${wsProtocol}//${window.location.host}?ref_id=${ref_id}`);
 
     ws.onopen = () => {
         console.log('Terhubung ke server WebSocket.');
