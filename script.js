@@ -22,6 +22,25 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     }
+    
+    // --- LOGIKA UNTUK HAMBURGER MENU ---
+    const hamburger = document.querySelector('.hamburger-menu');
+    const navLinks = document.querySelector('.nav-links');
+    const authLinksContainer = document.getElementById('auth-links');
+
+    if (hamburger && navLinks) {
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            // Sembunyikan/tampilkan tombol login/daftar saat menu di-toggle
+            if (authLinksContainer) {
+                if (navLinks.classList.contains('active')) {
+                    authLinksContainer.style.display = 'none';
+                } else {
+                    authLinksContainer.style.display = 'block';
+                }
+            }
+        });
+    }
 
     // --- FUNGSI SEARCH BAR BARU ---
     const searchInput = document.getElementById('searchInput');
