@@ -29,6 +29,10 @@
     background-image: linear-gradient(rgba(11, 12, 29, 0.6), var(--dark-bg)), url('https://images.alphacoders.com/132/1323319.jpeg');
 }
 
+#dana-banner {
+    background-image: linear-gradient(rgba(11, 12, 29, 0.6), var(--dark-bg)), url('https://images.unsplash.com/photo-1633113087739-141c3878e348?q=80&w=2070&auto=format&fit=crop');
+}
+
 .product-layout {
     display: grid;
     grid-template-columns: 2fr 1fr;
