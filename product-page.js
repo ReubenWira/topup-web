@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (path.includes('free-fire')) return 'FREE FIRE';
         if (path.includes('genshin-impact')) return 'GENSHIN IMPACT';
         if (path.includes('valorant')) return 'VALORANT';
+        if (path.includes('dana')) return 'DANA';
         return null;
     }
 
@@ -52,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
     async function fetchProducts() {
         const brand = getBrandFromPath();
         if (!brand) {
-            if(nominalGrid) nominalGrid.innerHTML = '<p>Brand game tidak terdeteksi.</p>';
+            if(nominalGrid) nominalGrid.innerHTML = '<p>Brand produk tidak terdeteksi.</p>';
             return;
         };
 
@@ -67,19 +68,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (nominalGrid) {
                 nominalGrid.innerHTML = '';
                 if (products.length === 0) {
-                    nominalGrid.innerHTML = '<p>Produk tidak tersedia untuk game ini.</p>';
+                    nominalGrid.innerHTML = '<p>Produk tidak tersedia untuk kategori ini.</p>';
                     return;
                 }
                 
-                products.sort((a, b) => {
-                    const extractAmount = (productName) => {
-                        const match = productName.match(/\d+/);
-                        return match ? parseInt(match[0], 10) : 0;
-                    };
-                    const amountA = extractAmount(a.product_name);
-                    const amountB = extractAmount(b.product_name);
-                    return amountA - amountB;
-                });
+                products.sort((a, b) => a.price - b.price);
 
                 products.forEach(product => {
                     const item = document.createElement('div');
@@ -92,10 +85,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     item.setAttribute('data-price', product.price);
                     item.setAttribute('data-sku', product.buyer_sku_code);
-                    let iconClass = brand === 'GENSHIN IMPACT' ? 'fa-solid fa-star' : 'fa-solid fa-gem';
                     
                     const productName = isAvailable ? product.product_name : `${product.product_name}<br><small style="color: #ffc107;">(Gangguan)</small>`;
-                    item.innerHTML = `<i class="${iconClass}"></i> ${productName}`;
+                    
+                    // Menghilangkan ikon jika bukan game
+                    let iconHtml = '';
+                    const brandUpper = brand.toUpperCase();
+                    if (brandUpper === 'GENSHIN IMPACT') {
+                        iconHtml = '<i class="fa-solid fa-star"></i>';
+                    } else if (brandUpper !== 'DANA') { // Jangan tampilkan ikon untuk DANA
+                        iconHtml = '<i class="fa-solid fa-gem"></i>';
+                    }
+
+                    item.innerHTML = `${iconHtml} ${productName}`;
                     
                     if (isAvailable) {
                         item.addEventListener('click', () => {
@@ -122,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const userIdInput = document.getElementById('user-id');
             const zoneIdInput = document.getElementById('zone-id');
             
-            if (!userIdInput || !userIdInput.value) { alert('User ID wajib diisi!'); return; }
+            if (!userIdInput || !userIdInput.value) { alert('Data wajib diisi!'); return; }
             if (!selectedSku) { alert('Silakan pilih nominal top up!'); return; }
 
             let customer_no = userIdInput.value + (zoneIdInput && zoneIdInput.value ? zoneIdInput.value : '');
