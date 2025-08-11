@@ -1,7 +1,5 @@
 // File: topup web/server.js
-// Versi ini sudah dimodifikasi sepenuhnya untuk menggunakan MongoDB Atlas
-// dan menangani callback real-time dari DigiFlazz.
-
+// VERSI DENGAN PERBAIKAN HEARTBEAT
 require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
@@ -24,9 +22,6 @@ const MONGODB_URI = process.env.MONGODB_URI;
 let db;
 const clients = new Map();
 
-/**
- * Menghubungkan ke database MongoDB Atlas.
- */
 async function connectToDb() {
     if (!MONGODB_URI) {
         console.error('Error: MONGODB_URI tidak ditemukan di environment variables.');
@@ -35,7 +30,7 @@ async function connectToDb() {
     try {
         const client = new MongoClient(MONGODB_URI);
         await client.connect();
-        db = client.db('jawir-topup-db'); // Ganti nama DB jika perlu
+        db = client.db('jawir-topup-db');
         console.log('Berhasil terhubung ke MongoDB Atlas');
     } catch (error) {
         console.error('Gagal terhubung ke MongoDB:', error);
@@ -43,15 +38,27 @@ async function connectToDb() {
     }
 }
 
-// Middleware
 app.use(cors());
-app.use(express.json()); // Penting untuk membaca body JSON dari webhook
+app.use(express.json());
 app.use(express.static(__dirname));
 
-// Logika WebSocket untuk update status real-time
+// --- AWAL DARI PERBAIKAN ---
+
+/**
+ * Fungsi ini akan dipanggil saat klien merespons ping dari server.
+ * Ini menandakan koneksi masih hidup.
+ */
+function heartbeat() {
+  this.isAlive = true;
+}
+
 wss.on('connection', (ws, req) => {
     const urlParams = new URLSearchParams(req.url.slice(1));
     const ref_id = urlParams.get('ref_id');
+
+    // Tandai koneksi ini hidup dan atur listener untuk 'pong'
+    ws.isAlive = true;
+    ws.on('pong', heartbeat); 
 
     if (ref_id) {
         clients.set(ref_id, ws);
@@ -73,11 +80,22 @@ wss.on('connection', (ws, req) => {
     });
 });
 
-/**
- * Mengirim pembaruan status ke klien melalui WebSocket.
- * @param {string} ref_id - ID referensi transaksi.
- * @param {object} transactionData - Data transaksi terbaru.
- */
+// Kirim ping ke semua klien setiap 30 detik
+const interval = setInterval(function ping() {
+  wss.clients.forEach(function each(ws) {
+    if (ws.isAlive === false) return ws.terminate(); // Putuskan jika tidak merespons
+    ws.isAlive = false; // Asumsikan mati, tunggu pong untuk mengkonfirmasi hidup
+    ws.ping();
+  });
+}, 30000);
+
+// Hentikan interval saat server ditutup
+wss.on('close', function close() {
+  clearInterval(interval);
+});
+
+// --- AKHIR DARI PERBAIKAN ---
+
 function sendStatusUpdate(ref_id, transactionData) {
     const client = clients.get(ref_id);
     if (client && client.readyState === client.OPEN) {
@@ -85,7 +103,7 @@ function sendStatusUpdate(ref_id, transactionData) {
     }
 }
 
-// --- RUTE API OTENTIKASI ---
+// --- RUTE API OTENTIKASI (Tidak ada perubahan) ---
 app.post('/api/register', async (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {
@@ -121,7 +139,8 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-// --- RUTE API PRODUK & TRANSAKSI ---
+
+// --- RUTE API PRODUK & TRANSAKSI (Tidak ada perubahan) ---
 app.get('/api/products', async (req, res) => {
     const { brand, username: loggedInUser } = req.query;
     if (!brand) return res.status(400).json({ message: 'Parameter "brand" diperlukan.' });
@@ -170,9 +189,6 @@ app.post('/api/buat-transaksi', async (req, res) => {
         await db.collection('transactions').insertOne(transactionData);
         console.log(`Transaksi dibuat: ${ref_id}`);
         
-        // Di aplikasi nyata, panggil handlePaymentSuccess setelah payment gateway
-        // mengirim notifikasi pembayaran berhasil ke webhook pembayaran Anda.
-        // Untuk simulasi, kita panggil langsung setelah 5 detik.
         setTimeout(() => handlePaymentSuccess(ref_id), 5000);
 
         res.json({ success: true, data: { ref_id } });
@@ -195,18 +211,14 @@ app.get('/api/status', async (req, res) => {
     }
 });
 
-// --- ENDPOINT WEBHOOK DARI DIGIFLAZZ ---
 app.post('/api/digiflazz-callback', async (req, res) => {
     try {
-        // 1. Verifikasi Secret Key untuk keamanan
-        // Sesuaikan nama header jika berbeda (misal: 'x-hub-signature')
         const webhookSecret = req.header('x-digiflazz-secret'); 
         if (webhookSecret !== process.env.DIGIFLAZZ_WEBHOOK_SECRET) {
             console.warn('Callback diterima dengan secret yang tidak valid.');
             return res.status(403).json({ success: false, message: 'Secret tidak valid.' });
         }
 
-        // 2. Proses data yang diterima
         const callbackData = req.body.data;
         if (!callbackData || !callbackData.ref_id) {
             return res.status(400).json({ success: false, message: 'Data atau ref_id tidak ada.' });
@@ -214,7 +226,6 @@ app.post('/api/digiflazz-callback', async (req, res) => {
         
         console.log('Menerima callback dari DigiFlazz:', callbackData);
 
-        // 3. Update transaksi di database
         const transactionsCollection = db.collection('transactions');
         await transactionsCollection.updateOne(
             { ref_id: callbackData.ref_id },
@@ -227,13 +238,11 @@ app.post('/api/digiflazz-callback', async (req, res) => {
             }
         );
         
-        // 4. Kirim pembaruan ke klien melalui WebSocket
         const updatedTransaction = await transactionsCollection.findOne({ ref_id: callbackData.ref_id });
         if (updatedTransaction) {
             sendStatusUpdate(callbackData.ref_id, updatedTransaction);
         }
 
-        // 5. Kirim respons 200 OK ke DigiFlazz agar tidak mengirim callback lagi
         res.status(200).json({ success: true });
 
     } catch (error) {
@@ -242,19 +251,12 @@ app.post('/api/digiflazz-callback', async (req, res) => {
     }
 });
 
-
-/**
- * Fungsi ini dipanggil setelah pembayaran berhasil.
- * Tugasnya adalah memicu proses top-up di DigiFlazz.
- * @param {string} ref_id - ID referensi transaksi.
- */
 async function handlePaymentSuccess(ref_id) {
     const transactionsCollection = db.collection('transactions');
     let transaction = await transactionsCollection.findOne({ ref_id });
 
     if (!transaction || transaction.status !== 'PENDING_PAYMENT') return;
 
-    // Update status ke "DIPROSES" dan kirim ke klien
     await transactionsCollection.updateOne({ ref_id }, { $set: { status: 'DIPROSES', message: 'Pembayaran berhasil! Kami sedang memproses pesanan Anda.' } });
     transaction = await transactionsCollection.findOne({ ref_id });
     sendStatusUpdate(ref_id, transaction);
@@ -264,7 +266,6 @@ async function handlePaymentSuccess(ref_id) {
     const signature = md5(username + apiKey + ref_id);
 
     try {
-        // Memanggil API DigiFlazz untuk melakukan top-up
         console.log(`Mengirim permintaan top-up ke DigiFlazz untuk ref_id: ${ref_id}`);
         await axios.post('https://api.digiflazz.com/v1/transaction', {
             username,
@@ -272,11 +273,9 @@ async function handlePaymentSuccess(ref_id) {
             customer_no: transaction.customer_no,
             ref_id,
             sign: signature,
-            testing: false, // Set ke false untuk transaksi sungguhan
+            testing: false,
         });
         
-        // Setelah ini, server hanya menunggu callback dari DigiFlazz.
-
     } catch (error) {
         console.error("Error menghubungi provider:", error.response ? error.response.data : error.message);
         await transactionsCollection.updateOne({ ref_id }, { $set: { status: 'Gagal', message: 'Terjadi kesalahan saat menghubungi provider.' } });
@@ -285,7 +284,6 @@ async function handlePaymentSuccess(ref_id) {
     }
 }
 
-// Menjalankan server SETELAH koneksi database berhasil
 connectToDb().then(() => {
     server.listen(PORT, () => {
         console.log(`Server berjalan di http://localhost:${PORT}`);
